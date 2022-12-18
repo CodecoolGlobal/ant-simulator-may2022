@@ -34,9 +34,9 @@ public class HelloApplication extends Application {
         Colony<Ant> antColony = new AntColonyImpl(width, height);
 
         Map<Class<? extends Ant>, Integer> colonyConfiguration = new HashMap<>();
-        colonyConfiguration.put(Drone.class, 40);
-        colonyConfiguration.put(Worker.class, 30);
-        colonyConfiguration.put(Soldier.class, 20);
+        colonyConfiguration.put(Drone.class, 150);
+        colonyConfiguration.put(Worker.class, 10);
+        colonyConfiguration.put(Soldier.class, 10);
         antColony.generateColony(colonyConfiguration);
 
         ColonyCanvas<Ant> colonyCanvas = new ColonyCanvas<>(cellSize, antColony);
@@ -85,7 +85,7 @@ public class HelloApplication extends Application {
                     antColony.update();
                     colonyCanvas.draw();
                     StringBuilder sb = new StringBuilder();
-                    colonyInfo.forEach((k,v) -> {
+                    antColony.getColonyInfo().forEach((k,v) -> {
                         sb.append(k.getSimpleName()).append(": ").append(v).append("\n");
                     });
                     colonyInfoText.setText(sb.toString() + "\n" + simulationCount.get());

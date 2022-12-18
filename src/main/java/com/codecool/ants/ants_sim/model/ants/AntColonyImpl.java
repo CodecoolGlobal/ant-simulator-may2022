@@ -38,18 +38,48 @@ public class AntColonyImpl implements Colony<Ant> {
     public void update() {
         //czy jest kolizja
         //czy jest w ramach kolnii
+        List<Ant> newBorns = new ArrayList<>();
         colony.forEach(ant -> {
             try {
                 while (true) {
                     Position nextPosition = ant.getNextPosition();
                     if (isMoveInColonyBorders(nextPosition)) {
                         ant.setPosition(nextPosition);
+                        if (isSexPossible(ant)){
+                            newBorns.add(new Worker(generateRandomPosition()));
+                            startSex((Drone)ant);
+                        }
                         break;
                     }
                 }
             } catch (RuntimeException ignored) {
             }
         });
+        colony.addAll(newBorns);
+        if (!queen.isAvailable()) {
+            if (queen.getMattingCounter() > 0) {
+                queen.setMattingCounter(queen.getMattingCounter() - 1);
+            } else {
+                queen.getPartner().setBlocked(false);
+                queen.setPartner(null);
+            }
+            if (queen.getRestingCounter() > 0) {
+                queen.setRestingCounter(queen.getRestingCounter() - 1);
+            } else {
+                queen.setAvailable(true);
+            }
+        }
+    }
+
+    private boolean isSexPossible(Ant ant) {
+        return ant.getPosition().getX() == queen.getPosition().getX() && ant.getPosition().getY() == queen.getPosition().getY() && ant instanceof Drone && queen.isAvailable();
+    }
+
+    private void startSex(Drone partner) {
+        queen.setPartner(partner);
+        queen.setMattingCounter(4);
+        queen.setRestingCounter(20 + queen.getMattingCounter());
+        partner.setBlocked(true);
     }
 
     private boolean isMoveInColonyBorders(Position position) {

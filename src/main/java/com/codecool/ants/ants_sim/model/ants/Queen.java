@@ -2,12 +2,26 @@ package com.codecool.ants.ants_sim.model.ants;
 
 import com.codecool.ants.ants_sim.model.Position;
 import javafx.scene.image.Image;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 public class Queen extends Ant{
 
     private static Image image;
+
+    @Getter @Setter
+    private boolean isAvailable = true;
+
+    @Getter @Setter
+    private Drone partner;
+
+    @Getter @Setter
+    private int mattingCounter;
+
+    @Getter @Setter
+    private int restingCounter;
 
     public Queen(Position position) {
         super(position);

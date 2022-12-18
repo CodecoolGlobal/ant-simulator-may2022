@@ -3,12 +3,17 @@ package com.codecool.ants.ants_sim.model.ants;
 import com.codecool.ants.ants_sim.MoveDirection;
 import com.codecool.ants.ants_sim.model.Position;
 import javafx.scene.image.Image;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 public class Drone extends Ant {
 
     private static Image image;
+
+    @Getter @Setter
+    private boolean isBlocked;
 
     public Drone(Position position) {
         super(position);
